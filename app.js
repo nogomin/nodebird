@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
+require('dotenv').config();
 
 const pageRouter = require('./routes/page');
 
@@ -17,10 +18,11 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser('nodebirdsecret'));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
     resave: false,
     saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
     secret: 'nodebirdsecret',
     cookie: {
         httpOnly: true,
